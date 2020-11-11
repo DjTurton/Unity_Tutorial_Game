@@ -9,6 +9,15 @@ public class Rocket : MonoBehaviour
     //this lets us modify the value of this float from the editor
     [SerializeField] float rcsThrust = 100f;
 
+    //sound
+    [SerializeField] AudioClip mainEngine; //our main engine thrust sound
+    [SerializeField] AudioClip deathSound; // The sound that plays when we die
+    [SerializeField] AudioClip winSound; // The sound that plays when we win a level
+    //particles
+    [SerializeField] ParticleSystem mainEngineParticles; //our main engine thrust particles
+    [SerializeField] ParticleSystem deathParticles; // The effect that plays when we die
+    [SerializeField] ParticleSystem winParticles; // The effect that plays when we win a level
+
     //variable to initialize rigidbody
     Rigidbody rigidbody;
     AudioSource audioSource;
@@ -44,12 +53,15 @@ public class Rocket : MonoBehaviour
             rigidbody.AddRelativeForce(Vector3.up);
             if (!audioSource.isPlaying)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
+                mainEngineParticles.Play();
             }
         } 
         else 
         {
             audioSource.Stop();
+            mainEngineParticles.Stop();
+
         }
 
     }
@@ -74,7 +86,7 @@ public class Rocket : MonoBehaviour
         rigidbody.freezeRotation = false; // resume physics control of rotation
     }
 
-
+    //dealing with collisions
     void OnCollisionEnter(Collision collision)
     {
         if (state != State.Alive)
@@ -89,13 +101,19 @@ public class Rocket : MonoBehaviour
                 break;
             case "Finish":
                 //go to the next level
+                audioSource.Stop();
+                audioSource.PlayOneShot(winSound);
+                winParticles.Play();
                 state = State.Transcending;
-                Invoke("LoadNextScene", 0.5f); //this gives us a short delay before loading the next level 
+                Invoke("LoadNextScene", 0.9f); //this gives us a short delay before loading the next level 
                 break;
             default:
                 //die
                 state = State.Dying;
-                Invoke("LoadFirstScene", 0.5f);
+                audioSource.Stop();
+                audioSource.PlayOneShot(deathSound);
+                deathParticles.Play();
+                Invoke("LoadFirstScene", 0.9f);
                 break;
         }
     }

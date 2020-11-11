@@ -1083,11 +1083,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rocket Ship 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3416177335173774929, guid: f43e500d417dc7246b91d9c68849ae02,
-        type: 3}
-      propertyPath: m_Constraints
-      value: 56
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f43e500d417dc7246b91d9c68849ae02, type: 3}
 --- !u!1001 &5994109965288158785
