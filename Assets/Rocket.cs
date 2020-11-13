@@ -8,6 +8,7 @@ public class Rocket : MonoBehaviour
     
     //this lets us modify the value of this float from the editor
     [SerializeField] float rcsThrust = 100f;
+    [SerializeField] float levelLoadDelay = 2f;
 
     //sound
     [SerializeField] AudioClip mainEngine; //our main engine thrust sound
@@ -50,7 +51,7 @@ public class Rocket : MonoBehaviour
         //thrust
         if (Input.GetKey(KeyCode.Space))
         {
-            rigidbody.AddRelativeForce(Vector3.up);
+            rigidbody.AddRelativeForce(Vector3.up * rcsThrust * Time.deltaTime);
             if (!audioSource.isPlaying)
             {
                 audioSource.PlayOneShot(mainEngine);
@@ -105,7 +106,7 @@ public class Rocket : MonoBehaviour
                 audioSource.PlayOneShot(winSound);
                 winParticles.Play();
                 state = State.Transcending;
-                Invoke("LoadNextScene", 0.9f); //this gives us a short delay before loading the next level 
+                Invoke("LoadNextScene", levelLoadDelay); //this gives us a short delay before loading the next level 
                 break;
             default:
                 //die
@@ -113,7 +114,7 @@ public class Rocket : MonoBehaviour
                 audioSource.Stop();
                 audioSource.PlayOneShot(deathSound);
                 deathParticles.Play();
-                Invoke("LoadFirstScene", 0.9f);
+                Invoke("LoadFirstScene", levelLoadDelay);
                 break;
         }
     }
