@@ -72,7 +72,7 @@ public class Rocket : MonoBehaviour
     void processRotation() 
     {
         //left and right rotation
-        rigidbody.freezeRotation = true; // take manual control of rotation
+        rigidbody.angularVelocity = Vector3.zero; // remove rotation due to physics
 
         //used for modifying how far we rotate per frame
         float rotationThisFrame = rcsThrust * Time.deltaTime;
@@ -86,7 +86,6 @@ public class Rocket : MonoBehaviour
             transform.Rotate(-Vector3.forward * rotationThisFrame);
         }
 
-        rigidbody.freezeRotation = false; // resume physics control of rotation
     }
 
     //dealing with collisions
